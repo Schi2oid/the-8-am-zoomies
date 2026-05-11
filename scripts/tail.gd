@@ -29,11 +29,8 @@ func _ready():
 	width = 5.0
 	var gradient_res = Gradient.new()
 	gradient_res.set_color(1, Color("4d3f3dff")) # 头部颜色
-	gradient_res.set_color(0, Color("a38e8b")) # 尾部颜色
+	gradient_res.set_color(0, Color("a38e8bff")) # 尾部颜色
 	gradient = gradient_res
-	
-	# 确保线条平滑渲染
-	antialiased = true
 	
 func _process(delta: float):
 	if(special_judge == true):
@@ -83,10 +80,4 @@ func _process(delta: float):
 					target_pos.x += 0.05
 				points_pos[i] = points_pos[i].lerp(target_pos, stiffness)
 	
-	# 确保没有重复的点，避免渲染问题
-	var filtered_points: PackedVector2Array
-	for i in range(points_pos.size()):
-		if i == 0 or points_pos[i].distance_to(points_pos[i-1]) > 0.1:
-			filtered_points.append(points_pos[i])
-	
-	points = filtered_points
+	points = PackedVector2Array(points_pos)
