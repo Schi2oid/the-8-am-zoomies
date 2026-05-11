@@ -1,0 +1,65 @@
+[gd_scene load_steps=7 format=3 uid="uid://p8aj1ttkvou6"]
+
+[ext_resource type="Script" uid="uid://cge8v6y3vvumk" path="res://scripts/saffy.gd" id="1_f5ieb"]
+[ext_resource type="PackedScene" uid="uid://crvmrnrxwmxry" path="res://scenes/tail.tscn" id="2_fcum2"]
+[ext_resource type="Texture2D" uid="uid://l1cyfm8bcf2e" path="res://sprites/cat_sit_no_tail-Sheet-new.png" id="3_h506q"]
+
+[sub_resource type="Animation" id="Animation_fcum2"]
+loop_mode = 1
+
+[sub_resource type="Animation" id="Animation_f5ieb"]
+resource_name = "idle"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.06666667, 0.13333334, 0.2, 0.26666668, 0.4, 0.6333333, 0.7, 0.76666665),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
+"update": 1,
+"values": [0, 1, 2, 3, 4, 5, 6, 7, 0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_fcum2"]
+_data = {
+&"RESET": SubResource("Animation_fcum2"),
+&"idle": SubResource("Animation_f5ieb")
+}
+
+[node name="Saffy" type="CharacterBody2D"]
+script = ExtResource("1_f5ieb")
+
+[node name="Visual" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Visual"]
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="Visual/SubViewportContainer"]
+transparent_bg = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(40, 40)
+
+[node name="Tail" parent="Visual/SubViewportContainer/SubViewport" instance=ExtResource("2_fcum2")]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual"]
+position = Vector2(0, -1)
+texture = ExtResource("3_h506q")
+hframes = 8
+
+[node name="head" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(6, 2, 6, -10, -3, -10, -3, 2)
+
+[node name="body" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-6, 2, 6, 2, 6, 9, -6, 9)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_fcum2")
+}

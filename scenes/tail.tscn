@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://crvmrnrxwmxry"]
+
+[ext_resource type="Script" uid="uid://cei2lvm5jjs2b" path="res://scripts/tail.gd" id="1_wne8n"]
+
+[sub_resource type="Curve" id="Curve_fcum2"]
+_data = [Vector2(0, 1), 0.0, -0.022939708, 0, 0, Vector2(1, 0.6981132), -0.4416817, 0.0, 0, 0]
+point_count = 2
+
+[node name="Tail" type="Line2D"]
+top_level = true
+z_index = -1
+points = PackedVector2Array(0, 0)
+width_curve = SubResource("Curve_fcum2")
+joint_mode = 2
+begin_cap_mode = 2
+end_cap_mode = 2
+script = ExtResource("1_wne8n")
+gravity = Vector2(0, -40)
