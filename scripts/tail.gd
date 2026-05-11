@@ -28,6 +28,7 @@ func stop_rolling():
 func _ready():
 	
 	visual = get_tree().root.find_child("Visual", true, false)
+	print(visual.name)
 	points_pos.clear()
 	real_points_pos.clear()
 	for i in range(length):
@@ -89,6 +90,5 @@ func _process(delta: float):
 					target_pos.x += 0.05
 				real_points_pos[i] = real_points_pos[i].lerp(target_pos, stiffness)
 	
-	print(real_points_pos[length-1])
 	points = PackedVector2Array(real_points_pos)
 	
