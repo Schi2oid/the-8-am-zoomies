@@ -205,9 +205,10 @@ func update_animation_effects(input_dir):
 # --- 状态转换判断 ---
 func apply_state_transitions(input_dir):
 	if anim.current_animation == "roll":
-		tail.is_rolling = true
+		if not tail.is_rolling:
+			tail.start_rolling()
 	else:
-		tail.is_rolling = false
+		tail.stop_rolling()
 	if on_floor and current_state != State.DASH:
 		can_dash = true
 	if Input.is_action_just_pressed("dash") and can_dash and current_state != State.DASH:

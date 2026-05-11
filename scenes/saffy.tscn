@@ -543,6 +543,7 @@ fit_margin = 5.0
 [node name="Tail" parent="Visual/CanvasGroup" instance=ExtResource("2_fcum2")]
 top_level = false
 z_index = 0
+end_cap_mode = 1
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="Visual/CanvasGroup"]
 position = Vector2(0, -1)
@@ -586,6 +587,5 @@ scale_amount_curve = SubResource("Curve_emoba")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 limit_smoothed = true
-position_smoothing_enabled = true
 position_smoothing_speed = 3.0
 script = ExtResource("9_hpgf4")

@@ -3,8 +3,8 @@
 [ext_resource type="Script" uid="uid://cei2lvm5jjs2b" path="res://scripts/tail.gd" id="1_wne8n"]
 
 [sub_resource type="Curve" id="Curve_fcum2"]
-_data = [Vector2(0, 0.40432757), 0.0, 1.2358773, 0, 0, Vector2(1, 1), 0.02843101, 0.0, 0, 0]
-point_count = 2
+_data = [Vector2(0, 1), 0.0, -2.6437544e-07, 0, 0, Vector2(0.94909096, 0.6209567), -1.170628, -1.170628, 0, 0, Vector2(1, 0.5143508), -3.9554217, 0.0, 0, 0]
+point_count = 3
 
 [node name="Tail" type="Line2D"]
 top_level = true
