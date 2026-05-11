@@ -1,7 +1,7 @@
 extends Line2D
 
 @export var length: int = 10         # 增加节点数，让曲线更柔顺
-@export var spacing: float = 1.0       # 节点间的固定间距
+@export var spacing: float = 2.0       # 节点间的固定间距
 @export var stiffness: float = 0.8    # 追随速度 (0-1)
 @export var gravity: Vector2 = Vector2(0, 600) # 稍微给一点下坠感
 
@@ -28,8 +28,8 @@ func _ready():
 	# 设置 Line2D 样式
 	width = 5.0
 	var gradient_res = Gradient.new()
-	gradient_res.set_color(1, Color("4d3f3dff")) # 头部颜色
-	gradient_res.set_color(0, Color("a38e8bff")) # 尾部颜色
+	gradient_res.set_color(0, Color("4d3f3dff")) # 头部颜色
+	gradient_res.set_color(1, Color("a38e8bff")) # 尾部颜色
 	gradient = gradient_res
 	
 func _process(delta: float):
@@ -80,4 +80,5 @@ func _process(delta: float):
 					target_pos.x += 0.05
 				points_pos[i] = points_pos[i].lerp(target_pos, stiffness)
 	
+	points_pos.reverse()
 	points = PackedVector2Array(points_pos)
