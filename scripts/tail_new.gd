@@ -58,6 +58,9 @@ func _physics_process(delta: float):
 		relative_points[i] -= root_movement 
 		
 		if is_rolling:
+			if(visual.global_position.distance_to(current_root_global + relative_points[i]) > 12.0):
+				relative_points[i] = relative_points[i].lerp(relative_points[i-1], stiffness)
+				continue
 			var roll_speed = 3.0 * 2.0 * PI * rot
 			var angle = (PI + time_passed * roll_speed - (i * 0.3)) if rot == 1.0 else (time_passed * roll_speed + (i * 0.3))
 			var target_rel = (visual.global_position + Vector2(cos(angle), sin(angle)) * 8.0) - current_root_global
