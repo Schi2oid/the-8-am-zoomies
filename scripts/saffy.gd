@@ -262,8 +262,9 @@ func apply_state_transitions(input_dir):
 					change_state(State.IDLE if input_dir == 0 else State.RUN)
 
 func handle_jump(delta):
+	if(is_frozen): return
 	if on_floor and Input.is_action_just_pressed("jump"):
-		if(current_state == State.DASH):
+		if(current_state == State.DASH and dash_direction.x != 0):
 			velocity.y = jump_velocity - 60
 		else: velocity.y = jump_velocity
 		current_jump_timer = jump_max_time
