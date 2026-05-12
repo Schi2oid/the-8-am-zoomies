@@ -36,7 +36,6 @@ func _ready():
 
 func _physics_process(delta: float):
 	if special_judge: return
-	print(is_rolling)
 	rot = sign(visual.scale.x)
 	time_passed += delta
 	
