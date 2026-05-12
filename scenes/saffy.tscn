@@ -1,7 +1,6 @@
 [gd_scene load_steps=56 format=3 uid="uid://p8aj1ttkvou6"]
 
 [ext_resource type="Script" uid="uid://cge8v6y3vvumk" path="res://scripts/saffy.gd" id="1_f5ieb"]
-[ext_resource type="PackedScene" uid="uid://crvmrnrxwmxry" path="res://scenes/tail.tscn" id="2_fcum2"]
 [ext_resource type="Shader" uid="uid://c6uxjtbdh28qb" path="res://scripts/hair.gdshader" id="2_h506q"]
 [ext_resource type="Texture2D" uid="uid://bne3qwrfn868a" path="res://sprites/cat_down_and_up-Sheet.png" id="4_dupiu"]
 [ext_resource type="Texture2D" uid="uid://d3f2pnb0jkbff" path="res://sprites/cat_sit046-Sheet.png" id="4_t07dh"]
@@ -9,6 +8,7 @@
 [ext_resource type="Script" uid="uid://bnqhx727asg5" path="res://scripts/body.gd" id="5_t07dh"]
 [ext_resource type="Texture2D" uid="uid://bbwe3vejyxlun" path="res://sprites/cat_roll-Sheet.png" id="6_o4j3g"]
 [ext_resource type="Script" uid="uid://x07dk3h7u08n" path="res://scripts/camera_2d.gd" id="9_hpgf4"]
+[ext_resource type="Script" uid="uid://hyi0awgf73eq" path="res://scripts/tail_new.gd" id="9_qw7xb"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_t07dh"]
 shader = ExtResource("2_h506q")
@@ -540,10 +540,8 @@ z_index = -1
 material = SubResource("ShaderMaterial_t07dh")
 fit_margin = 5.0
 
-[node name="Tail" parent="Visual/CanvasGroup" instance=ExtResource("2_fcum2")]
-top_level = false
-z_index = 0
-end_cap_mode = 1
+[node name="Tail" type="Node2D" parent="Visual/CanvasGroup"]
+script = ExtResource("9_qw7xb")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="Visual/CanvasGroup"]
 position = Vector2(0, -1)
