@@ -135,12 +135,13 @@ func change_state(new_state):
 		State.IDLE:
 			if(current_state == State.DOWN):
 				anim.play("up")
-			if(current_state == State.DASH):
+			elif(current_state == State.DASH):
 				anim.play("roll_after")
+			else: anim.play("idle")
 			print("Idle!")
 		State.RUN:
 			print("Run!")
-			anim.play("idle")
+			anim.play("run")
 		State.JUMP:
 			anim.play("roll_before")
 			on_floor = false

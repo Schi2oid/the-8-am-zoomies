@@ -13,8 +13,8 @@ extends Node2D
 @export var pos: Vector2 = Vector2(-7.0, 2.0) 
 
 # --- 像素圆绘图参数 ---
-@export var radius_start: int = 4   
-@export var radius_end: int = 2     
+@export var radius_start: float = 3.2   # 修改为 float
+@export var radius_end: float = 1.8     # 修改为 float
 @export var color_head: Color = Color("4d3f3dff")
 @export var color_tail: Color = Color("a38e8bff")
 
@@ -80,34 +80,41 @@ func _physics_process(delta: float):
 	queue_redraw()
 
 func _draw():
-	# 【核心改动 1】：绝对不取整！保留主角的亚像素小数部分
+	# 保持原点带有小数，以同步主角的亚像素位移
 	var exact_draw_origin = prev_root_global - global_position
 	
 	for i in range(length):
 		var t = float(i) / float(length - 1 if length > 1 else 1)
-		var r = int(lerp(radius_start, radius_end, t))
+		
+		# 【修改】：保留浮点半径，不进行 int 转换
+		var r = lerp(radius_start, radius_end, t)
 		var color = color_head.lerp(color_tail, t)
 		
-		# 【核心改动 2】：仅仅对内部相对坐标取整。
-		# 浮点原点 + 纯整数偏移 = 保证该中心点的小数部分与主角绝对一致！
+		# 内部坐标取整，确保像素对齐逻辑
 		var center = exact_draw_origin + relative_points[i].round()
 		
 		draw_perfect_pixel_circle(center, r, color)
 
-## 核心函数：绘制完美像素圆，同时保留坐标小数部分
-func draw_perfect_pixel_circle(center: Vector2, radius: int, color: Color):
-	if radius <= 0:
-		# 半径为 0 时，在拥有精确小数坐标的 center 位置绘制 1x1 像素
+## 核心函数：支持浮点半径的完美像素圆
+func draw_perfect_pixel_circle(center: Vector2, radius: float, color: Color):
+	if radius <= 0.0:
+		return
+	
+	# 极小半径处理
+	if radius < 0.5:
 		draw_rect(Rect2(center, Vector2(1, 1)), color)
 		return
 		
-	# 在局部的整数网格中遍历
-	for y in range(-radius, radius + 1):
-		for x in range(-radius, radius + 1):
-			# 中点圆判定算法 (使用 + 0.5 让边缘圆润对称)
-			if x*x + y*y <= (radius * radius + radius * 0.5):
-				# center 带有小数，x 和 y 是纯整数
-				# 这意味着生成的每一个 Rect 的起始坐标，都完美携带了主角的亚像素偏移！
+	# 确定采样范围：向上取整确保覆盖边缘
+	var ceil_r = int(ceil(radius))
+	var r_sq = radius * radius
+	
+	# 遍历局部像素网格
+	for y in range(-ceil_r, ceil_r + 1):
+		for x in range(-ceil_r, ceil_r + 1):
+			# 标准圆方程：距离平方 <= 半径平方
+			if x*x + y*y <= r_sq:
+				# center 携带亚像素偏移，(x, y) 保证了像素块的相对完整
 				draw_rect(Rect2(center + Vector2(x, y), Vector2(1, 1)), color)
 
 # 控制接口
