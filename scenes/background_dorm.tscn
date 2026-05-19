@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://c83qpgaoaqip8"]
+
+[ext_resource type="Texture2D" uid="uid://c5hwa5ba34p1i" path="res://sprites/Dorm.png" id="1_sj06b"]
+
+[node name="Background_Dorm" type="Node2D"]
+
+[node name="back" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0, 0)
+
+[node name="Sprite2D" type="Sprite2D" parent="back"]
+position = Vector2(160, 90)
+texture = ExtResource("1_sj06b")
