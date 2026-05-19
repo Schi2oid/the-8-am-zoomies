@@ -1,4 +1,4 @@
-[gd_scene load_steps=66 format=3 uid="uid://p8aj1ttkvou6"]
+[gd_scene load_steps=69 format=3 uid="uid://p8aj1ttkvou6"]
 
 [ext_resource type="Script" uid="uid://cge8v6y3vvumk" path="res://scripts/saffy.gd" id="1_f5ieb"]
 [ext_resource type="Shader" uid="uid://c6uxjtbdh28qb" path="res://scripts/hair.gdshader" id="2_h506q"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://052w1s7ijri" path="res://sprites/cat_stand-Sheet.png" id="5_emoba"]
 [ext_resource type="Script" uid="uid://bnqhx727asg5" path="res://scripts/body.gd" id="5_t07dh"]
 [ext_resource type="Texture2D" uid="uid://bbwe3vejyxlun" path="res://sprites/cat_roll-Sheet.png" id="6_o4j3g"]
+[ext_resource type="Texture2D" uid="uid://dxhbv208pn8xk" path="res://sprites/cat_on_bike_without_outline.png" id="6_yujdw"]
 [ext_resource type="Texture2D" uid="uid://dd8hc0sg7kwbe" path="res://sprites/run_without_outline.png" id="7_qw7xb"]
 [ext_resource type="Script" uid="uid://x07dk3h7u08n" path="res://scripts/camera_2d.gd" id="9_hpgf4"]
 [ext_resource type="Script" uid="uid://hyi0awgf73eq" path="res://scripts/tail_new.gd" id="9_qw7xb"]
@@ -56,6 +57,10 @@ region = Rect2(192, 0, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_1lvg1"]
 atlas = ExtResource("5_emoba")
 region = Rect2(224, 0, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ssx6h"]
+atlas = ExtResource("6_yujdw")
+region = Rect2(0, 0, 64, 64)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yjs0p"]
 atlas = ExtResource("6_o4j3g")
@@ -229,6 +234,14 @@ animations = [{
 }],
 "loop": true,
 "name": &"idle",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ssx6h")
+}],
+"loop": true,
+"name": &"ride",
 "speed": 5.0
 }, {
 "frames": [{
@@ -604,11 +617,28 @@ tracks/1/keys = {
 "values": [0, 1]
 }
 
+[sub_resource type="Animation" id="Animation_yujdw"]
+resource_name = "ride"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Visual/CanvasGroup/Sprite2D:animation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [&"ride"]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_fcum2"]
 _data = {
 &"RESET": SubResource("Animation_fcum2"),
 &"down": SubResource("Animation_1rx66"),
 &"idle": SubResource("Animation_f5ieb"),
+&"ride": SubResource("Animation_yujdw"),
 &"roll": SubResource("Animation_rki5y"),
 &"roll_after": SubResource("Animation_5c8cy"),
 &"roll_before": SubResource("Animation_6hxpa"),

@@ -18,6 +18,7 @@ enum State { DOWN, IDLE, RUN, JUMP, FALL, DASH }
 @export var shock_wavescene = preload("res://scenes/Shockwave.tscn")
 
 # --- 内部变量 ---
+var ghost_count = 0
 var ghost_timer = 0.0
 var is_frozen = false
 var can_dash = true                    # 落地恢复的冲刺次数 
@@ -42,6 +43,7 @@ func spawn_shockwave():
 func spawn_ghost():
 	if current_state != State.DASH:
 		return 
+	ghost_count += 1
 	var ghost = visual.duplicate()
 	var cg = ghost.get_node("CanvasGroup")
 	cg.material = cg.material.duplicate()
@@ -124,6 +126,7 @@ func change_state(new_state):
 			update_animation_effects(Input.get_axis("ui_left", "ui_right"))
 			spawn_shockwave()
 			start_dash_freeze(0.1)
+			ghost_count = 0
 			get_tree().create_timer(0.1001).timeout.connect(spawn_ghost)
 			get_tree().create_timer(0.17).timeout.connect(spawn_ghost)
 			get_tree().create_timer(0.24).timeout.connect(spawn_ghost)
@@ -269,6 +272,8 @@ func handle_jump(delta):
 		else: velocity.y = jump_velocity
 		current_jump_timer = jump_max_time
 		change_state(State.JUMP)
+		if ghost_count >= 2:
+			can_dash = true
 		is_jumping = true
 	
 	if Input.is_action_pressed("jump") and is_jumping:
