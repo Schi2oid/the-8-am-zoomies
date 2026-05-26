@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://d0sqim00b7yjh"]
+
+[ext_resource type="Script" uid="uid://co55r7okqv1ca" path="res://scripts/game_room.gd" id="1_7hb5d"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hvunu"]
+resource_local_to_scene = true
+
+[node name="BaseRoom" type="Node2D"]
+script = ExtResource("1_7hb5d")
+
+[node name="BoundedArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BoundedArea"]
+shape = SubResource("RectangleShape2D_hvunu")
+
+[node name="SpawnPoint" type="Marker2D" parent="."]

@@ -5,7 +5,7 @@ uniform vec4 line_color : source_color = vec4(0.0, 0.0, 0.0, 1.0);
 uniform vec4 ghost_color : source_color = vec4(1.0, 1.0, 1.0, 1.0);
 uniform bool is_ghost = false;
 bool is_marker(vec4 raw_tex){
-	return raw_tex.r <= 0.05 && raw_tex.b <= 0.05 && raw_tex.g > 0.5;
+	return  raw_tex.g > raw_tex.b * 5.0 && raw_tex.g > raw_tex.r * 5.0;
 }
 float get(vec4 col){
 	if(is_marker(col)) return 0.0;
