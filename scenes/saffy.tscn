@@ -666,7 +666,6 @@ fit_margin = 5.0
 script = ExtResource("9_qw7xb")
 
 [node name="Sprite2D" type="AnimatedSprite2D" parent="Visual/CanvasGroup"]
-position = Vector2(0, -1)
 sprite_frames = SubResource("SpriteFrames_cbf1n")
 animation = &"idle"
 script = ExtResource("5_t07dh")

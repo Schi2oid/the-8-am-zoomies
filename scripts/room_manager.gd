@@ -43,14 +43,12 @@ func _update_camera_limits(bounds: Rect2) -> void:
 	tween.tween_property(camera, "limit_right", int(bounds.end.x), 0.5)
 	tween.tween_property(camera, "limit_bottom", int(bounds.end.y), 0.5)
 	
-	if player.has_method("set_physics_process"):
-		player.process_mode = Node.PROCESS_MODE_DISABLED
+	player.room_freeze()
 		
 	# 动画结束，把锁解开
 	tween.chain().tween_callback(func():
 		is_transitioning = false # 允许下一次切图判定
-		if player.has_method("set_physics_process"):
-			player.process_mode = Node.PROCESS_MODE_INHERIT
+		player.room_unfreeze()
 	)
 
 # 当玩家死亡时，由玩家或者全局控制器调用此函数

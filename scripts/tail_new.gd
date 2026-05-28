@@ -28,6 +28,10 @@ var is_rolling: bool = false
 var rot: float = 1.0
 
 func _ready():
+	if(special_judge):
+		relative_points = relative_points.duplicate() 
+		queue_redraw()
+		return
 	visual = get_tree().root.find_child("Visual", true, false)
 	relative_points.clear()
 	for i in range(length):
@@ -35,7 +39,8 @@ func _ready():
 	prev_root_global = visual.to_global(pos)
 
 func _physics_process(delta: float):
-	if special_judge: return
+	if special_judge:
+		return
 	rot = sign(visual.scale.x)
 	time_passed += delta
 	
@@ -58,12 +63,12 @@ func _physics_process(delta: float):
 		
 		if is_rolling:
 			if(visual.global_position.distance_to(current_root_global + relative_points[i]) > 12.0):
-				relative_points[i] = relative_points[i].lerp(relative_points[i-1], stiffness)
+				relative_points[i] = relative_points[i].lerp(relative_points[i-1], 0.8)
 				continue
 			var roll_speed = 3.0 * 2.0 * PI * rot
 			var angle = (PI + time_passed * roll_speed - (i * 0.3)) if rot == 1.0 else (time_passed * roll_speed + (i * 0.3))
-			var target_rel = (visual.global_position + Vector2(cos(angle), sin(angle)) * 8.0) - current_root_global
-			relative_points[i] = relative_points[i].lerp(target_rel, stiffness)
+			var target_rel = (visual.global_position + Vector2(cos(angle), sin(angle)) * 7.0) - current_root_global
+			relative_points[i] = relative_points[i].lerp(target_rel, 0.8)
 		else:
 			var wave = sin(time_passed * swing_speed + (i * wave_offset))
 			var swing_x = wave * swing_range * (sqrt(float(i)) / length)

@@ -29,12 +29,13 @@ void fragment() {
 	        COLOR = curr_color;
 	    }
 	}
-	if(is_ghost && COLOR.a > 0.0){
+	if(is_ghost && (curr_color.a > 0.0 || COLOR == line_color)){
 		if(COLOR == line_color){
 			COLOR = vec4(0,0,0,0);
 		}
-		else if(length(COLOR.rgb - vec3(0.0, 0.235, 0.388)) < 0.1){
+		else if(length(curr_color.rgb - vec3(0.0, 0.235, 0.388)) < 0.1){
 			COLOR.rgb *= 10.0;
+			COLOR.a = 1.0;
 		}
 		else{
 			COLOR = ghost_color;
