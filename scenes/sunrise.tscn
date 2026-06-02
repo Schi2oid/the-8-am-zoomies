@@ -1,0 +1,95 @@
+[gd_scene load_steps=12 format=3 uid="uid://d2btlvtkqntch"]
+
+[ext_resource type="Script" uid="uid://2c5iuetyvhmv" path="res://scripts/sunrise.gd" id="1_5so0c"]
+[ext_resource type="Shader" uid="uid://br15pmvhd3p3h" path="res://scripts/sunrise.gdshader" id="1_w5ctp"]
+[ext_resource type="Shader" uid="uid://dyiea4puhg5u5" path="res://scripts/cloud.gdshader" id="2_5so0c"]
+[ext_resource type="Script" uid="uid://bvmbgj41a0dux" path="res://scripts/procedural_sun.gd" id="3_nr0lt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nr0lt"]
+shader = ExtResource("1_w5ctp")
+shader_parameter/time_of_day = 0.0
+shader_parameter/pixelated = false
+shader_parameter/pixel_resolution = Vector2(384, 216)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nr0lt"]
+noise_type = 2
+frequency = 0.015
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_418lj"]
+noise = SubResource("FastNoiseLite_nr0lt")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_px7tq"]
+shader = ExtResource("2_5so0c")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_418lj")
+shader_parameter/pixel_resolution = Vector2(320, 180)
+shader_parameter/cloud_coverage = 0.3910000185725
+shader_parameter/band_top = 0.1110000052725
+shader_parameter/band_bottom = 0.68400003249
+shader_parameter/scroll_speed = Vector2(0.01, 0.002)
+shader_parameter/color_highlight = Color(0.82, 0.82, 0.82, 1)
+shader_parameter/color_midtone = Color(0.73871994, 0.6688, 0.76, 1)
+shader_parameter/color_shadow = Color(0.6119525, 0.5906645, 0.9377292, 1)
+shader_parameter/time_of_day = 0.0
+shader_parameter/sun_screen_pos = Vector2(0.5, 0.5)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_418lj"]
+noise_type = 3
+seed = 1
+frequency = 0.006
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_ujl34"]
+noise = SubResource("FastNoiseLite_418lj")
+seamless = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bbn0l"]
+shader = ExtResource("2_5so0c")
+shader_parameter/noise_texture = SubResource("NoiseTexture2D_ujl34")
+shader_parameter/pixel_resolution = Vector2(160, 90)
+shader_parameter/cloud_coverage = 0.5200000247
+shader_parameter/band_top = 0.2810000133475
+shader_parameter/band_bottom = 0.9210000437475
+shader_parameter/scroll_speed = Vector2(0.025, 0.005)
+shader_parameter/color_highlight = Color(1, 1, 1, 1)
+shader_parameter/color_midtone = Color(0.82664543, 0.85595787, 0.8873752, 1)
+shader_parameter/color_shadow = Color(0.87700284, 0.8448307, 0.9732047, 1)
+shader_parameter/time_of_day = 0.0
+shader_parameter/sun_screen_pos = Vector2(0.5, 0.5)
+
+[node name="Sunrise" type="Node2D"]
+script = ExtResource("1_5so0c")
+
+[node name="SkyLayer" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0, 0)
+
+[node name="SkyColorRect" type="ColorRect" parent="SkyLayer"]
+material = SubResource("ShaderMaterial_nr0lt")
+offset_right = 320.0
+offset_bottom = 180.0
+
+[node name="SunLayer" type="Parallax2D" parent="."]
+scroll_scale = Vector2(0.02, 0.01)
+
+[node name="ProceduralSun" type="Node2D" parent="SunLayer"]
+script = ExtResource("3_nr0lt")
+
+[node name="DistantClouds" type="Parallax2D" parent="."]
+texture_repeat = 2
+scroll_scale = Vector2(0.1, 0.02)
+repeat_size = Vector2(320, 180)
+
+[node name="CloudRectFar" type="ColorRect" parent="DistantClouds"]
+texture_repeat = 2
+material = SubResource("ShaderMaterial_px7tq")
+offset_right = 320.0
+offset_bottom = 180.0
+
+[node name="NearClouds" type="Parallax2D" parent="."]
+texture_repeat = 2
+scroll_scale = Vector2(0.3, 0.05)
+repeat_size = Vector2(320, 180)
+
+[node name="CloudRectNear" type="ColorRect" parent="NearClouds"]
+material = SubResource("ShaderMaterial_bbn0l")
+offset_right = 320.0
+offset_bottom = 180.0

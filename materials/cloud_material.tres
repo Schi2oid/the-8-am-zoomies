@@ -1,0 +1,10 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3]
+
+[ext_resource type="Shader" path="res://shaders/cloud_shader.gdshader" id="1"]
+
+[resource]
+shader = ExtResource("1")
+shader_param/cloud_color = Color(0.9, 0.9, 0.95, 1.0)
+shader_param/sun_color = Color(1.0, 0.4, 0.2, 1.0)
+shader_param/density = 0.5
+shader_param/light_transmission = 0.8

@@ -1,14 +1,11 @@
-[gd_scene load_steps=9 format=3 uid="uid://5b6v2e6uhbdx"]
+[gd_scene load_steps=10 format=3 uid="uid://5b6v2e6uhbdx"]
 
 [ext_resource type="PackedScene" uid="uid://p8aj1ttkvou6" path="res://scenes/saffy.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://c83qpgaoaqip8" path="res://scenes/background_dorm.tscn" id="2_0wfyh"]
-[ext_resource type="PackedScene" uid="uid://ymq1bsgh2n1a" path="res://scenes/dorm_1.tscn" id="3_sugp2"]
 [ext_resource type="Script" uid="uid://uqk7qvyqd4fo" path="res://scripts/room_manager.gd" id="4_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://d0sqim00b7yjh" path="res://scenes/base_room.tscn" id="5_tefeu"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sugp2"]
-resource_local_to_scene = true
-size = Vector2(8, 8)
+[ext_resource type="PackedScene" uid="uid://gh7xu7xjmbql" path="res://scenes/dorm_room_1.tscn" id="6_tefeu"]
+[ext_resource type="PackedScene" uid="uid://d2btlvtkqntch" path="res://scenes/sunrise.tscn" id="7_o6xl0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o6xl0"]
 resource_local_to_scene = true
@@ -18,28 +15,18 @@ size = Vector2(320, 180)
 resource_local_to_scene = true
 size = Vector2(320, 180)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tbgi4"]
+resource_local_to_scene = true
+size = Vector2(320, 180)
+
 [node name="Main" type="Node"]
 
-[node name="StaticBody2D" type="StaticBody2D" parent="."]
-
-[node name="ColorRect" type="ColorRect" parent="StaticBody2D"]
-offset_left = 173.0
-offset_top = 114.0
-offset_right = 181.0
-offset_bottom = 122.0
-metadata/_edit_use_anchors_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(177, 118)
-shape = SubResource("RectangleShape2D_sugp2")
-
 [node name="Saffy" parent="." groups=["Player"] instance=ExtResource("1_o5qli")]
-position = Vector2(177, 90)
+position = Vector2(231.27219, 119.51457)
 
 [node name="Background_Dorm" parent="." instance=ExtResource("2_0wfyh")]
-z_index = -10
-
-[node name="Dorm-1" parent="." instance=ExtResource("3_sugp2")]
+visible = false
+z_index = -100
 
 [node name="RoomManager" type="Node" parent="." node_paths=PackedStringArray("camera", "player")]
 script = ExtResource("4_tbgi4")
@@ -47,9 +34,10 @@ camera = NodePath("../Saffy/Camera2D")
 player = NodePath("../Saffy")
 
 [node name="Dorm1" parent="RoomManager" instance=ExtResource("5_tefeu")]
+position = Vector2(-177.57605, 79.34436)
 
 [node name="CollisionShape2D" parent="RoomManager/Dorm1/BoundedArea" index="0"]
-position = Vector2(160, 90)
+position = Vector2(17.57605, 10.65564)
 shape = SubResource("RectangleShape2D_o6xl0")
 
 [node name="SpawnPoint" parent="RoomManager/Dorm1" index="1"]
@@ -61,6 +49,15 @@ position = Vector2(22, 126)
 position = Vector2(480, 90)
 shape = SubResource("RectangleShape2D_tipki")
 
+[node name="BaseRoom" parent="RoomManager" instance=ExtResource("6_tefeu")]
+
+[node name="CollisionShape2D" parent="RoomManager/BaseRoom/BoundedArea" index="0"]
+shape = SubResource("RectangleShape2D_tbgi4")
+
+[node name="Sunrise" parent="." instance=ExtResource("7_o6xl0")]
+z_index = -100
+
 [editable path="Saffy"]
 [editable path="RoomManager/Dorm1"]
 [editable path="RoomManager/Dorm2"]
+[editable path="RoomManager/BaseRoom"]

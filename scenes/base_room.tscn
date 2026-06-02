@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://d0sqim00b7yjh"]
+[gd_scene load_steps=4 format=3 uid="uid://d0sqim00b7yjh"]
 
 [ext_resource type="Script" uid="uid://co55r7okqv1ca" path="res://scripts/game_room.gd" id="1_7hb5d"]
+[ext_resource type="TileSet" uid="uid://b1mkkossg845t" path="res://scenes/TileSet.tres" id="2_ont3e"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_hvunu"]
 resource_local_to_scene = true
@@ -14,3 +15,6 @@ script = ExtResource("1_7hb5d")
 shape = SubResource("RectangleShape2D_hvunu")
 
 [node name="SpawnPoint" type="Marker2D" parent="."]
+
+[node name="TileMapLayer" type="TileMapLayer" parent="."]
+tile_set = ExtResource("2_ont3e")
