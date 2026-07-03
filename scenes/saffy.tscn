@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://p8aj1ttkvou6"]
+[gd_scene load_steps=70 format=3 uid="uid://p8aj1ttkvou6"]
 
 [ext_resource type="Script" uid="uid://cge8v6y3vvumk" path="res://scripts/saffy.gd" id="1_f5ieb"]
 [ext_resource type="Shader" uid="uid://c6uxjtbdh28qb" path="res://scripts/hair.gdshader" id="2_h506q"]
@@ -650,6 +650,9 @@ _data = {
 _data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -2.2393365, 0.0, 0, 0]
 point_count = 2
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j2j2o"]
+size = Vector2(12, 8)
+
 [node name="Saffy" type="CharacterBody2D"]
 process_mode = 3
 script = ExtResource("1_f5ieb")
@@ -712,3 +715,13 @@ limit_bottom = 180
 limit_smoothed = true
 position_smoothing_speed = 3.0
 script = ExtResource("9_hpgf4")
+
+[node name="SpikeDetector" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SpikeDetector"]
+position = Vector2(0.125, 5)
+shape = SubResource("RectangleShape2D_j2j2o")
+
+[connection signal="body_entered" from="SpikeDetector" to="." method="_on_spike_detector_body_entered"]

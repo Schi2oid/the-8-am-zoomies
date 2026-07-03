@@ -55,7 +55,7 @@ func _update_camera_limits(bounds: Rect2) -> void:
 func respawn_player() -> void:
 	if current_room:
 		# 1. 重置当前房间的机关状态（比如吃掉的水晶重新变亮）
-		current_room.reset_room()
+		# current_room.reset_room()
 		# 2. 把玩家拉回出生点并重置玩家状态（如重置冲刺次数、速度清零）
 		player.global_position = current_room.spawn_point.global_position
 		if player.has_method("reset_player_state"):

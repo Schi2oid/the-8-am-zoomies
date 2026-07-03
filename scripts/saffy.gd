@@ -30,11 +30,12 @@ var is_jumping = false                 # 是否处于长按跳跃加力状态
 var air_friction = friction * air_param
 var on_floor = false
 var temp_velocity = Vector2.ZERO
-var active_ghost_tweens: Array[Tween] = [] # 新增：用于记录当前所有未淡出完毕的残影 Tween
+var active_ghost_tweens: Array[Tween] = [] # 用于记录当前所有未淡出完毕的残影 Tween
 
 @onready var visual = $Visual
 @onready var anim = $AnimationPlayer
 @onready var tail = $Visual/CanvasGroup/Tail
+@onready var death_blur = $DeathBlur
 
 var current_state = State.IDLE
 
@@ -87,6 +88,10 @@ func spawn_ghost():
 		return 
 	ghost_count += 1
 	var ghost = visual.duplicate()
+	
+	# 【新增】将残影节点加入到专属组，方便死亡时统一清理
+	ghost.add_to_group("dash_ghosts")
+	
 	var cg = ghost.get_node("CanvasGroup")
 	cg.material = cg.material.duplicate()
 	cg.material.set_shader_parameter("is_ghost", true)
@@ -108,7 +113,8 @@ func spawn_ghost():
 	
 	tween.finished.connect(func():
 		active_ghost_tweens.erase(tween)
-		ghost.queue_free()
+		if is_instance_valid(ghost):
+			ghost.queue_free()
 	)
 		
 func _physics_process(delta):
@@ -117,19 +123,19 @@ func _physics_process(delta):
 
 	if is_frozen == true:
 		velocity = Vector2.ZERO
-	
+
 	move_and_slide()
-	
+
 	on_floor = is_on_floor()
-	
+
 	var input_dir = Input.get_axis("ui_left", "ui_right")
-	
+
 	handle_jump(delta)
-	
+
 	apply_state_transitions(input_dir)
-	
+
 	handle_physics(input_dir, delta)
-	
+
 	update_animation_effects(input_dir)
 
 func start_dash_freeze(duration: float):
@@ -325,3 +331,58 @@ func handle_jump(delta):
 	if Input.is_action_just_released("jump"):
 		is_jumping = false
 		current_jump_timer = 0
+
+func die():
+	# 【核心修改】触发死亡的瞬间，立刻清除所有残影节点和未触发的残影计时器
+	get_tree().call_group("dash_ghosts", "queue_free")
+	get_tree().call_group("ghost_timers", "queue_free")
+	
+	# 强制停掉并清理所有残影的 Tween 引用
+	for tween in active_ghost_tweens:
+		if tween.is_valid():
+			tween.kill()
+	active_ghost_tweens.clear()
+
+	# 触发像素模糊转场
+	if death_blur and death_blur.material is ShaderMaterial:
+		var blur_mat = death_blur.material as ShaderMaterial
+		var tween = create_tween()
+		tween.tween_property(blur_mat, "shader_parameter/blur_amount", 1.0, 0.3)
+		tween.tween_callback(func():
+			var room_manager = get_tree().current_scene.get_node("RoomManager")
+			if room_manager and room_manager.has_method("respawn_player"):
+				room_manager.respawn_player()
+		)
+	else:
+		var room_manager = get_tree().current_scene.get_node("RoomManager")
+		if room_manager and room_manager.has_method("respawn_player"):
+			room_manager.respawn_player()
+
+func reset_player_state():
+	velocity = Vector2.ZERO
+	dash_timer = 0.0
+	dash_direction = Vector2.ZERO
+	can_dash = true
+	current_jump_timer = 0.0
+	is_jumping = false
+	change_state(State.IDLE)
+
+	# 强制杀死所有仍在运行的残影 Tween
+	for tween in active_ghost_tweens:
+		if tween.is_valid():
+			tween.kill()
+	active_ghost_tweens.clear()
+
+	# 【核心修改】兜底清理，确保场景中没有任何残留的残影和计时器
+	get_tree().call_group("dash_ghosts", "queue_free")
+	get_tree().call_group("ghost_timers", "queue_free")
+
+	# 恢复清晰度（移除模糊效果）
+	if death_blur and death_blur.material is ShaderMaterial:
+		var blur_mat = death_blur.material as ShaderMaterial
+		var tween = create_tween()
+		tween.tween_property(blur_mat, "shader_parameter/blur_amount", 0.0, 0.3)
+
+
+func _on_spike_detector_body_entered(_body: Node2D) -> void:
+	die()

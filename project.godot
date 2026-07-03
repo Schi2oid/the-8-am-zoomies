@@ -46,6 +46,11 @@ dash={
 ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="普通方块"
+2d_physics/layer_2="尖刺"
+
 [physics]
 
 common/physics_ticks_per_second=120
