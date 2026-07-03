@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://5b6v2e6uhbdx"]
+[gd_scene load_steps=11 format=4 uid="uid://5b6v2e6uhbdx"]
 
 [ext_resource type="PackedScene" uid="uid://p8aj1ttkvou6" path="res://scenes/saffy.tscn" id="1_o5qli"]
 [ext_resource type="PackedScene" uid="uid://c83qpgaoaqip8" path="res://scenes/background_dorm.tscn" id="2_0wfyh"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://d0sqim00b7yjh" path="res://scenes/base_room.tscn" id="5_tefeu"]
 [ext_resource type="PackedScene" uid="uid://gh7xu7xjmbql" path="res://scenes/dorm_room_1.tscn" id="6_tefeu"]
 [ext_resource type="PackedScene" uid="uid://d2btlvtkqntch" path="res://scenes/sunrise.tscn" id="7_o6xl0"]
+[ext_resource type="AudioStream" uid="uid://blkn1pqhhfpt5" path="res://music/Fuzzball Parade.mp3" id="7_tipki"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o6xl0"]
 resource_local_to_scene = true
@@ -113,6 +114,10 @@ text = "这边暂时还什么都没有。
 说起来，这个项目野心还真大呢。
 虽然现在也还没完成什么。
 恭喜你完成了这个不算demo的demo？"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_tipki")
+autoplay = true
 
 [editable path="Saffy"]
 [editable path="RoomManager/Dorm1"]
