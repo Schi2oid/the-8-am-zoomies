@@ -116,6 +116,7 @@ text = "这边暂时还什么都没有。
 恭喜你完成了这个不算demo的demo？"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+process_mode = 3
 stream = ExtResource("7_tipki")
 autoplay = true
 
