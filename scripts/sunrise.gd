@@ -27,8 +27,9 @@ extends Node2D
 @export_group("节点引用绑定")
 @onready var sky_color_rect: ColorRect = $SkyLayer/SkyColorRect
 @onready var sun_layer: Parallax2D = $SunLayer
-@onready var sun_node: Node2D = $SunLayer/ProceduralSun 
+@onready var sun_node: Node2D = $SunLayer/ProceduralSun
 @onready var cloud_far: ColorRect = $DistantClouds/CloudRectFar
+@onready var cloud_mid: ColorRect = $MidClouds/CloudRectMid
 @onready var cloud_near: ColorRect = $NearClouds/CloudRectNear
 
 func _ready() -> void:
@@ -96,6 +97,7 @@ func _process(delta: float) -> void:
 	# =========================================================================
 	var active_clouds: Array[ColorRect] = []
 	if is_instance_valid(cloud_far): active_clouds.append(cloud_far)
+	if is_instance_valid(cloud_mid): active_clouds.append(cloud_mid)
 	if is_instance_valid(cloud_near): active_clouds.append(cloud_near)
 	
 	for cloud in active_clouds:
